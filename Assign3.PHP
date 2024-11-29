@@ -147,7 +147,7 @@ class vegi {
     $this->color = $color;
   }
   function __destruct() {
-    echo "The Vegitable is {$this->name} and the color is {$this->color}.";
+    echo "<br>The Vegitable is {$this->name} and the color is {$this->color}.";
   }
 }
 
@@ -324,6 +324,109 @@ include 'UserController.php';
 $router = new Router(require 'routes.php');
 $router->route($_SERVER['REQUEST_URI']);
 
-echo "<br>*<b><u> Practical Example: Implementation of all the OOPs Concepts</u></b> *<br><br>";
+echo "<br><br>*<b><u>Connection with MySQL Database</u></b> *<br><br>";
+$servername = "localhost";
+$username = "username";
+$password = "password";
 
-?> 
+try {
+  $conn = new PDO("mysql:host=$servername;dbname=myDB", $username, $password);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  echo "Connected successfully";
+} catch(PDOException $e) {
+  echo "Connection failed: " . $e->getMessage();
+}
+
+echo "<br><br>*<b><u>Practical: Exception Handling with Try-Catch for Database ConnectionandQueries</u></b> *<br><br>";
+class customException extends Exception {
+  public function errorMessage() {
+    $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
+    .': <b>'.$this->getMessage().'</b> is not a valid E-Mail address';
+    return $errorMsg;
+  }
+}
+$email = "someone@example.com";
+try {
+  if(filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
+    throw new customException($email);
+  }
+  if(strpos($email, "example") !== FALSE) {
+    throw new Exception("$email is an example e-mail");
+  }
+}
+
+catch (customException $e) {
+  echo $e->errorMessage();
+}
+
+catch(Exception $e) {
+  echo $e->getMessage();
+}
+
+echo "<br><br>*<b><u>Server-Side Validation while Registration using Regular Expressions</u></b> *<br><br>";
+$password = "GeeksforGeeks@123";
+
+$pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/';
+
+if (preg_match($pattern, $password)) {
+    echo "Valid Password<br>";
+} else {
+    echo "Invalid Password<br>";
+}
+$email = "user@gmail.com"; 
+if (filter_var($email, FILTER_VALIDATE_EMAIL)) { 
+    echo("$email is a valid email address<br>"); 
+}  
+else { 
+    echo("$email is not a valid email address<br>"); 
+} 
+  
+echo "<br><br>*<b><u>Session and Cookies</u></b> *<br><br>";
+$cookie_name = "user";
+$cookie_value = "Alex Porter";
+setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+?>
+<html>
+<body>
+
+<?php
+if(!isset($_COOKIE[$cookie_name])) {
+  echo "Cookie named '" . $cookie_name . "' is not set!";
+} else {
+  echo "Cookie '" . $cookie_name . "' is set!<br>";
+  echo "Value is: " . $_COOKIE[$cookie_name]."<br>";
+}
+?>
+</body>
+</html>
+<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html>
+<body>
+
+<?php
+$_SESSION["favcolor"] = "green";
+$_SESSION["favanimal"] = "cat";
+echo "<br>Session variables are set.";
+?>
+
+</body>
+</html>
+<?php
+echo "<br><br>*<b><u>File Upload</u></b> *<br><br>";
+?>
+<!DOCTYPE html>
+<html>
+<body>
+
+<form action="upload.php" method="post" enctype="multipart/form-data">
+  Select image to upload:
+  <input type="file" name="fileToUpload" id="fileToUpload">
+  <input type="submit" value="Upload Image" name="submit">
+</form>
+
+</body>
+</html>
+<?php echo "<br><br>*<b><u>PHP with MVC Architecture</u></b> *<br><br>"; ?>
